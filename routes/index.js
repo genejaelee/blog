@@ -199,6 +199,7 @@ var routes = function(app, db){
       // and async GET the images after page loads.
       // 2 way binding update
       getImagesForPosts(results, function(imagesArray){
+        console.log('callback with image array');
     		res.render('./index.jade', {
     			title: "Video and Image Processing",
     			'posts': results,
@@ -248,6 +249,7 @@ var routes = function(app, db){
   }
   
   function getImagesForPosts(posts, callback){
+    console.log('getting images');
     var imagesArray = [];
     for(i = 0; i < posts.length; i++) {
       var refIds = posts[i].images.oid; //array of image ids

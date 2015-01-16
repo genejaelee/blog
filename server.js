@@ -15,7 +15,7 @@ var csurf = require('csurf');
 var multer = require('multer');
 
 app.use(multer({ 
-	dest: './public/images/',
+	dest: './public/files/',
 	onFileUploadStart: function(file) {
 		console.log(file.originalname + ' is starting ...');
 	},
@@ -32,6 +32,7 @@ app.use(cookieParser('spudboy'));
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/images'));
+app.use(express.static(__dirname + '/files'));
 
 // config
 var mongoskin = require('mongoskin');
