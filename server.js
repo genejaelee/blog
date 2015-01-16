@@ -39,7 +39,7 @@ var mongoskin = require('mongoskin');
 if (process.env.NODE_ENV == 'development') {
 	var db = mongoskin.db('mongodb://localhost:27017/node-blog', {safe: true});
 } else {
-	var db = mongoskin.db('mongodb://heroku_app33268598:vsgm0uq90a0qdltqe1c8lefogc@ds031661.mongolab.com:31661/heroku_app33268598');
+	var db = mongoskin.db(process.env.MONGOLAB_URI);
 }
 
 // view engine setup
