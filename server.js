@@ -36,7 +36,11 @@ app.use(express.static(__dirname + '/files'));
 
 // config
 var mongoskin = require('mongoskin');
-var db = mongoskin.db('mongodb://localhost:27017/node-blog', {safe: true});
+if (process.env.NODE_ENV == 'development') {
+	var db = mongoskin.db('mongodb://localhost:27017/node-blog', {safe: true});
+} else {
+	var db = mongoskin.db('mongodb://heroku_app33268598:vsgm0uq90a0qdltqe1c8lefogc@ds031661.mongolab.com:31661/heroku_app33268598');
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
