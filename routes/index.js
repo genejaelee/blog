@@ -198,28 +198,23 @@ var routes = function(app, db){
       // could potentially run this alongside res.render, 
       // and async GET the images after page loads.
       // 2 way binding update
-      getImagesForPosts(results, function(imagesArray){
-        console.log('callback with image array');
-    		res.render('./index.jade', {
-    			title: "Video and Image Processing",
-    			'posts': results,
-          'images': imagesArray
-    		});
-      });
+      if (results.length > 0) {
+        getImagesForPosts(results, function(imagesArray){
+          console.log('callback with image array');
+      		res.render('./index.jade', {
+      			title: "Video and Image Processing",
+      			'posts': results,
+            'images': imagesArray
+      		});
+        });
+      } else {
+        res.send('emptiness...');
+      }
   	});
   });
-
-  app.post('/blog/addComment', function(req, res) {
-  	articleProvider.addCommentToArticle(req.param('_id'), {
-  		person: req.param('person'),
-  		comment: req.param('comment'),
-  		created_at: new Date()
-  	}, function(error, docs) {
-  		res.redirect('/blog' + req.param('_id'))
-  	});
-  });
-  
-  //// FUNCTIONS ////
+  ///////////////////////////////////
+  //////////// FUNCTIONS ////////////
+  ///////////////////////////////////
   function getImagesByIds(refIds, imagesArray, callback){
     var images = [];
     for(j = 0; j < refIds.length; j++) {
