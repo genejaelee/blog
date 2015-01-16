@@ -83,7 +83,7 @@ app.use(function(err, req, res, next) {
 
 // IMPLEMENTATION
 app.uploader = require('./public/javascripts/uploader.js');
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 /*
 app.use(function(req,res) {
