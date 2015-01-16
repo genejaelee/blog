@@ -1,2 +1,2 @@
 # Ignore static assets not part of core app
-/public/
+/public/files
