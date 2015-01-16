@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='https://cdn.socket.io/socket.io-1.2.1.js')
+    script(src='/javascripts/angular/angular.js')
+    script(type="text/javascript", src='/javascripts/app.js')
+    script(type="text/javascript", src="/javascripts/controllers/posts.js")
+    script(type="text/javascript", src="/javascripts/directives/upload.js")
+    script(type="text/javascript", src="/javascripts/services/images.js")
+    
+  body(ng-app="blogApp")
+    block content
