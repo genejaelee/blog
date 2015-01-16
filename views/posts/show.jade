@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  div(ng-controller="postsViewController" ng-init="images= #{JSON.stringify(images[0])}")
+    a(href="/")!="Homepage"
+    h1= post.title
+    div#postsContainer
+      div.article
+        div.created_at= post.created_at
+        div.body= post.body
+        h3="Images"
+        ul(ng-repeat="image in images")
+          li="{{image.name}}"
+          li="{{image.filepath}}"
+          div.image
+            img(ng-model="image" ng-src= "../images/{{image.name}}" ng-click="clickImage(image, $event)" style="max-width: 600px;")
+            canvas(ng-src="{{image.data}}")
+
+        
+  

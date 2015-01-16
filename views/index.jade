@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1= title
+  div#postsContainer
+    div.pageLinks
+      ul
+        li
+          a(href="/posts/new")!="New Post"
+        li
+          a(href="/instagram")!="Instagram"
+    - each post, i in posts
+      div.postContainer
+        div.created_at= post.created_at
+        div.title
+          a(href="/posts/"+post._id)!= post.title
+        div.body= post.body
+        - each image, j in images[i]
+          img(style="max-width: 100%" src='/images/' + images[i][j].name)
+
