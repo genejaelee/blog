@@ -13,7 +13,7 @@ block content
           li="{{image.name}}"
           li="{{image.filepath}}"
           div.image
-            img(ng-model="image" ng-src= "../images/{{image.name}}" ng-click="clickImage(image, $event)" style="max-width: 600px;")
+            img(ng-model="image" ng-src= "../files/{{image.name}}" ng-click="clickImage(image, $event)" style="max-width: 600px;")
             canvas(ng-src="{{image.data}}")
 
         
