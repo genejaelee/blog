@@ -11,19 +11,17 @@ var awsApi = function(app, db) {
       "conditions": [ 
         {"bucket": "genejaelee-assets"}, 
         ["starts-with", "$key", ""],
-        {"acl": "private"},
+        {"acl": "public-read"},
         ["starts-with", "$Content-Type", ""],
         ["starts-with", "$filename", ""],
+        {"x-amz-meta-uuid": "14365123651274"},
+        {"x-amz-algorithm": "AWS4-HMAC-SHA256"},
         ["content-length-range", 0, 524288000]
       ]
     }
     var encodedPolicy = Buffer(JSON.stringify(policyJson)).toString('base64');
-    console.log('aws secret is ' + awsSecret);
-    console.log('aws access key is ' + awsAccessKey);
-    console.log('aws encoded policy is ' + encodedPolicy);
-    
-    // create HMAC-SHA1
-    var signature = crypto.createHmac('sha1', awsSecret).update(encodedPolicy);
+    // create HMAC-SHA256 hash
+    var signature = generateHmac(encodedPolicy, awsSecret);
     
     res.json({
       'key': awsAccessKey,
@@ -31,6 +29,12 @@ var awsApi = function(app, db) {
       'signature': signature
     });
   });
+}
+
+function generateHmac (data, awsSecret, algorithm, encoding) {
+  encoding = encoding || "base64";
+  algorithm = algorithm || "sha256";
+  return crypto.createHmac(algorithm, awsSecretKey).update(data).digest(encoding);
 }
 
 module.exports = awsApi;

@@ -113,9 +113,10 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
           data: {
             key: file.name,
             AWSAccessKeyId: credentials.key,
-            acl: 'public',
+            acl: 'public-read',
             policy: credentials.policy,
-            signature: credentials.signature,
+            'x-amz-algorithm': 'AWS4-HMAC-SHA256',
+            'x-amz-signature': credentials.signature,
             "Content-Type": file.type != '' ? file.type : 'application/octet-stream',
             filename: file.name
           },
