@@ -120,6 +120,9 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
             filename: file.name
           },
           file: file,
+        }).
+        success(function (data, status, headers, config) {
+          callback(true);
         });
       });
     }
@@ -127,9 +130,17 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
   
   $scope.$watch('files', function(){
     console.log('length of files changed');
-    $scope.postFilesToS3($scope.files, function(){
-      console.log('succeeded');
-      // now post information to server
+    var toUpload = $scope.files.length;
+    var uploaded = 0
+    $scope.postFilesToS3($scope.files, function(bool){
+      if (bool == true) {
+        console.log('succeeded');
+        uploaded++;
+        if (uploaded == toUpload) {
+          console.log('all images uploaded');
+          // now post information to server
+        }
+      }
     });
   });
   
