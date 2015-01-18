@@ -111,12 +111,16 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
           url: 'https://genejaelee-assets.s3.amazonaws.com/',
           method: 'POST',
           data: {
+            'bucket' : 'genejaelee-assets',
             'key': file.name,
             'AWSAccessKeyId': credentials.key,
             'acl': 'public-read',
             'policy': credentials.policy,
-            'algorithm': 'AWS4-HMAC-SHA256',
-            'signature': credentials.signature,
+            'x-amz-algorithm': 'AWS4-HMAC-SHA256',
+            'x-amz-credential': credentials.credential,
+            'x-amz-signature': credentials.signature,
+            'x-amz-date': credentials.date,
+            "Content-Type": file.type != '' ? file.type : 'application/octet-stream',
             'filename': file.name
           },
           file: file,
