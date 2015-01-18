@@ -29,6 +29,7 @@
     "grunt-contrib-uglify": "~0.5.0"
   },
   "devDependencies": {
-    "grunt-ng-constant": "^1.0.0"
+    "grunt-ng-constant": "^1.0.0",
+    "moment": "^2.9.0"
   }
 }

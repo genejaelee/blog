@@ -1,7 +1,10 @@
 var crypto = require('crypto');
+var moment = require('moment');
 
 var awsApi = function(app, db) {
   console.log('included aws api');
+  
+  var date = moment(Date.now()).format('YYYYMMDD');
   
   app.get('/api/aws/credentials', function(req, res, next) {
     var awsSecret = process.env.AWS_SECRET_ACCESS_KEY;
@@ -14,7 +17,7 @@ var awsApi = function(app, db) {
         {"acl": "public-read"},
         ["starts-with", "$Content-Type", ""],
         ["starts-with", "$filename", ""],
-        {"x-amz-meta-uuid": "14365123651274"},
+        {"x-amz-credential": awsAccessKey + "%2F" + date + "%2F" + "us-west-1%2Fs3%2Faws4_request" }
         {"x-amz-algorithm": "AWS4-HMAC-SHA256"},
         ["content-length-range", 0, 524288000]
       ]
