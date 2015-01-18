@@ -23,7 +23,7 @@ var awsApi = function(app, db) {
     console.log('aws encoded policy is ' + encodedPolicy);
     
     // create HMAC-SHA1
-    var signature = crypto.createHmac('sha1', awsSecret).update(encodedPolicy).digest('hex');
+    var signature = crypto.createHmac('sha1', awsSecret).update(encodedPolicy);
     
     res.json({
       'key': awsAccessKey,
