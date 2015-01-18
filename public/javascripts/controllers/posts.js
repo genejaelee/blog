@@ -1,4 +1,4 @@
-var postsModule = angular.module('postsModule', ['imagesModule']);
+var postsModule = angular.module('postsModule', ['imagesModule', 'angularFileUpload']);
 
 postsModule.factory('uploaderMethods', function($http){
   return {
@@ -78,6 +78,9 @@ postsModule.factory('uploaderMethods', function($http){
         alert("Please select a file");
       }
     }
+    
+    
+    
   }
 })
 
@@ -98,10 +101,9 @@ postsModule.controller('postsViewController', function($scope, $http, imageProce
 });
 
 //////////// NEW CONTROLLER ////////////
-postsModule.controller('postsNewController', function(uploaderMethods, $scope, $http) {
+postsModule.controller('postsNewController', function(uploaderMethods, $scope, $http, $upload) {
   console.log('init new post controller');
 
-  $scope.files = [];
   $scope.post = {};
   $scope.post.filepaths = [];
   
@@ -112,10 +114,48 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
     });
   });
   
-  $scope.startUpload = function (){
-    console.log('POSTING : ' + JSON.stringify($scope.post));
-    uploaderMethods.saveLocalFile($scope.files);
-    uploaderMethods.postForm($scope.post, $scope.files);
-    //uploaderMethods.postUpload($scope.post);
+  $scope.getAWSCredentials = function(callback){
+    $http({
+      method: "GET",
+      url: "/api/aws/credentials"
+    }).
+    success(function (data, status, headers, config) {
+      callback(data);
+    }); // promise
   }
+  
+  $scope.postFilesToS3 = function(files, callback) {
+    console.log(files);
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      console.log('uploading ' + JSON.stringify(file) + ' client-side');
+      // get policy, key, and signature
+      $scope.getAWSCredentials(function(credentials){
+        // now POST
+        console.log('about to post to s3');
+        $scope.upload = $upload.upload({
+          url: 'https://genejaelee-assets.s3.amazonaws.com/',
+          method: 'POST',
+          data: {
+            key: file.name,
+            AWSAccessKeyId: credential.key,
+            acl: 'public',
+            policy: credentials.policy,
+            signature: credentials.signature,
+            "Content-Type": file.type != '' ? file.type : 'application/octet-stream',
+            filename: file.name
+          },
+          file: file,
+        });
+      });
+    }
+  }
+  
+  $scope.$watch('files', function(){
+    console.log('length of files changed');
+    $scope.postFilesToS3($scope.files, function(){
+      console.log('succeeded');
+    });
+  });
+  
 });

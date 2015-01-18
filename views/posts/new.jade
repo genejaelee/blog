@@ -11,14 +11,14 @@ block content
         div
           span Body :
           textarea(name="body", rows=10, id="editArticleBody", ng-model="post.body")
-        div(file-dropzone file="file" file-name="fileName" style="padding: 20px")= "DROP FILE HERE"
-          img(ng-src="{{file}}" ng-model="post.file" style="max-width: 640px")
+        div
+          input(ng-file-select type="file" name="images" ng-model="files" multiple="true")="Attach any File"
+        div
           span(class="file-name", ng-model="post.fileName")="{{fileName}}"
           input(type="file", name="images", file-upload multiple)
           ul
             li(ng-repeat="file in files")="{{file.name}}"
             input(ng-repeat="file in files" type="hidden" value="{{file.name}}" name="paths[]")
-          button(type="button", id="uploadButton", ng-click="startUpload()")= "Upload"
         div#editArticleSubmit
           input(type="submit", value="Send", id="submitButton")
         pre="{{post}}"

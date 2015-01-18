@@ -1,9 +1,14 @@
+var fs = require('fs');
+var zlib = require('zlib');
+
 var routes = function(app, db){
+  // init APIs
+  var awsApi = require('./api/aws')(app, db);
   
   app.get('/instagram', function(req, res, next) {
     console.log('ROUTING TO instagram page');
     res.render('./instagram/show.jade');
-  })
+  });
   
   app.get('/posts/new', function(req, res, next) {
     console.log('ROUTING TO posts/new');
@@ -193,7 +198,7 @@ var routes = function(app, db){
   });
   
   app.get('/', function(req, res) {
-    /////////// IMPLEMENTATION ////////////
+    console.log('getting home page');
   	db.collection('posts').find().toArray(function(err, results){
       // could potentially run this alongside res.render, 
       // and async GET the images after page loads.
@@ -217,19 +222,32 @@ var routes = function(app, db){
   ///////////////////////////////////
   function getImagesByIds(refIds, imagesArray, callback){
     var images = [];
-    for(j = 0; j < refIds.length; j++) {
+    if (refIds.length === 0) {
+      console.log('refids are undefined');
+      imagesArray.push([{
+        "filepath": "/images/default.png",
+        "name": "default.png"
+    }]);
+      callback(imagesArray);
+    } else {
       
-      (function(j) {
-        db.collection('images').findById(refIds[j], function(err, result) {
-          console.log('contacted db');
-          images.push(result);
-          if (j == (refIds.length - 1)) {
-            imagesArray.push(images);
-            callback(imagesArray);
-          }
-        });
-      })(j);
+      for(j = 0; j < refIds.length; j++) {
       
+        (function(j) {
+          db.collection('images').findById(refIds[j], function(err, result) {
+            console.log('contacted db');
+            images.push(result);
+            console.log("j is " + j);
+            console.log("refIDs length is " + refIds.length);
+            if (j == (refIds.length - 1)) {
+              imagesArray.push(images);
+              console.log('calling backkk');
+              callback(imagesArray);
+            }
+          });
+        })(j);
+      
+      }
     }
   }
   
@@ -250,6 +268,9 @@ var routes = function(app, db){
       var refIds = posts[i].images.oid; //array of image ids
       // get image and callback once done with array
       getImagesByIds(refIds, imagesArray, function(imagesArray){
+        console.log('imagesarray length is ' + imagesArray.length);
+        console.log('imagesarray contents are ' + JSON.stringify(imagesArray));
+        console.log('posts length is ' + posts.length);
         if (imagesArray.length == posts.length) {
           // images array done
           console.log("images array done");
