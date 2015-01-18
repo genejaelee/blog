@@ -5,10 +5,12 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='https://cdn.socket.io/socket.io-1.2.1.js')
     script(src='/javascripts/angular/angular.js')
+    script(type="text/javascript", src="/javascripts/aws-sdk-2.1.5.min.js")
+    script(type="text/javascript", src="/javascripts/directives/angular-file-upload.js")
     script(type="text/javascript", src='/javascripts/app.js')
     script(type="text/javascript", src="/javascripts/controllers/posts.js")
     script(type="text/javascript", src="/javascripts/directives/upload.js")
     script(type="text/javascript", src="/javascripts/services/images.js")
     
-  body(ng-app="blogApp")
+  body(ng-app="blogApp" ng-controller="mainController")
     block content

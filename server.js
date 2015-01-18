@@ -5,7 +5,6 @@ var server = require('http').Server(app);
 var inspect = require('util').inspect;
 var io = require('socket.io').listen(server);
 
-var fs = require('fs');
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -35,10 +34,14 @@ app.use(express.static(__dirname + '/images'));
 app.use(express.static(__dirname + '/files'));
 
 // config
+console.log('config mongoskin');
+console.log(app.get('env'));
 var mongoskin = require('mongoskin');
-if (process.env.NODE_ENV == 'development') {
+if (app.get('env') == 'development') {
+	console.log('choosing db for development');
 	var db = mongoskin.db('mongodb://localhost:27017/node-blog', {safe: true});
-} else {
+} 
+else if (app.get('env') == 'production') {
 	var db = mongoskin.db(process.env.MONGOLAB_URI);
 }
 
