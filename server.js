@@ -33,17 +33,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/images'));
 app.use(express.static(__dirname + '/files'));
 
-// config
-console.log('config mongoskin');
-console.log(app.get('env'));
+app.config = require('./config')(app); // pass global app to config file and get ENV vars
+console.log(app.config.mongodb);
+
+// DB config
 var mongoskin = require('mongoskin');
-if (app.get('env') == 'development') {
-	console.log('choosing db for development');
-	var db = mongoskin.db('mongodb://localhost:27017/node-blog', {safe: true});
-} 
-else if (app.get('env') == 'production') {
-	var db = mongoskin.db(process.env.MONGOLAB_URI);
-}
+var db = mongoskin.db(app.config.mongodb); // get URI from config file
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
