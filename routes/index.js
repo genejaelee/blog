@@ -140,24 +140,6 @@ var routes = function(app, db){
     //end
   });
   
-  app.post('/posts/save_image', function(req, res) {
-    console.log('saving image :');
-    console.log(JSON.stringify(req.body));
-    
-    /*
-    var fstream;
-    req.pipe(req.busboy);
-    console.log('about to call event handler');
-    req.busboy.on('file', function (fieldname, file, filename) {
-      console.log('Uploading: ' + filename);
-      fstream = fs.createWriteStream('/public/files/' + filename);
-      file.pipe(fstream);
-      fstream.on('close', function() {
-        res.redirect('back');
-      });
-    }); */
-  });
-  
   app.get('/posts/:id', function(req, res, next) {
   	db.collection('posts').findById(req.params.id, function(err, results){
       getImagesForPost(results, function(imagesArray){
