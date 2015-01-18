@@ -17,7 +17,7 @@ var awsApi = function(app, db) {
         {"acl": "public-read"},
         ["starts-with", "$Content-Type", ""],
         ["starts-with", "$filename", ""],
-        {"x-amz-credential": awsAccessKey + "%2F" + date + "%2F" + "us-west-1%2Fs3%2Faws4_request" }
+        {"x-amz-credential": awsAccessKey + "%2F" + date + "%2F" + "us-west-1%2Fs3%2Faws4_request" },
         {"x-amz-algorithm": "AWS4-HMAC-SHA256"},
         ["content-length-range", 0, 524288000]
       ]
