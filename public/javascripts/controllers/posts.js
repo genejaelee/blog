@@ -112,7 +112,7 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
           method: 'POST',
           data: {
             key: file.name,
-            AWSAccessKeyId: credential.key,
+            AWSAccessKeyId: credentials.key,
             acl: 'public',
             policy: credentials.policy,
             signature: credentials.signature,
