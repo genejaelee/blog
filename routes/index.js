@@ -210,7 +210,7 @@ var routes = function(app, db){
       			title: "Video and Image Processing",
       			'posts': results,
             'images': imagesArray,
-            'filepath': conf.filesPath
+            'filepath': app.config.filesPath
       		});
         });
       } else {
