@@ -34,7 +34,7 @@ var awsApi = function(app, db) {
 function generateHmac (data, awsSecret, algorithm, encoding) {
   encoding = encoding || "base64";
   algorithm = algorithm || "sha256";
-  return crypto.createHmac(algorithm, awsSecretKey).update(data).digest(encoding);
+  return crypto.createHmac(algorithm, awsSecret).update(data).digest(encoding);
 }
 
 module.exports = awsApi;
