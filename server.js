@@ -3,7 +3,6 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var inspect = require('util').inspect;
-var io = require('socket.io').listen(server);
 
 var path = require('path');
 var logger = require('morgan');
@@ -33,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/images'));
 app.use(express.static(__dirname + '/files'));
 
+// env config
 app.config = require('./config')(app); // pass global app to config file and get ENV vars
 console.log(app.config.mongodb);
 
@@ -84,19 +84,7 @@ app.use(function(err, req, res, next) {
 });
 
 // IMPLEMENTATION
-app.uploader = require('./public/javascripts/uploader.js');
 app.listen(process.env.PORT || 3000);
-
-/*
-app.use(function(req,res) {
-  req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-    console.log(fieldname);
-    console.log(file);
-    console.log(filename);
-    console.log(encoding);
-    console.log(mimetype);
-  });
-}); */
 
 // routing
 var routes = require('./routes/index')(app, db);
