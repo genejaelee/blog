@@ -209,7 +209,8 @@ var routes = function(app, db){
       		res.render('./index.jade', {
       			title: "Video and Image Processing",
       			'posts': results,
-            'images': imagesArray
+            'images': imagesArray,
+            'filepath': conf.filesPath
       		});
         });
       } else {
@@ -217,6 +218,7 @@ var routes = function(app, db){
       }
   	});
   });
+  
   ///////////////////////////////////
   //////////// FUNCTIONS ////////////
   ///////////////////////////////////
