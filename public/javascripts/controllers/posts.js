@@ -55,32 +55,6 @@ postsModule.factory('uploaderMethods', function($http){
       }); // promise
     },
     
-    startUpload: function(event) {
-      console.log('starting upload!');
-      if (document.getElementById('fileBox').val != "") {
-        FReader = new FileReader();
-        name = document.getElementById('nameBox').val;
-        var content = "<span id='nameArea'>Uploading " + selectedFile.name + " as " + name + "</span>";
-        content += "<div id='progressContainer'><div id='progressBar'></div></div><span id='percent'>0%</span>";
-        content += "<span id='uploaded'> - <span id='MB'>0</span>/" + Math.round(selectedFile.size / 1048576) + "MB</span>";
-        document.getElementById('uploadArea').innerHTML = content;
-        FReader.onload = function(event) {
-          socket.emit('upload', { 
-            'name' : name,
-            'data' : event.target.result
-          });
-        }
-        socket.emit('start', {
-          'name' : name,
-          'size' : selectedFile.size
-        });
-      } else {
-        alert("Please select a file");
-      }
-    }
-    
-    
-    
   }
 })
 

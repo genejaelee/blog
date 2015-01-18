@@ -14,8 +14,6 @@ block content
         div
           input(ng-file-select type="file" name="images" ng-model="files" multiple="true")="Attach any File"
         div
-          span(class="file-name", ng-model="post.fileName")="{{fileName}}"
-          input(type="file", name="images", file-upload multiple)
           ul
             li(ng-repeat="file in files")="{{file.name}}"
             input(ng-repeat="file in files" type="hidden" value="{{file.name}}" name="paths[]")
