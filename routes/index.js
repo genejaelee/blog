@@ -17,8 +17,6 @@ var routes = function(app, db){
   	res.render('./posts/new.jade', {
   		title: "New Post"
   	});
-    console.log('about to include uploader js');
-    app.uploader.initUploader(app);
   });
   
   app.post('/posts/create', function(req, res, next) {
