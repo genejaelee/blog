@@ -25,9 +25,9 @@ app.use(multer({
 app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(cookieSession({
-	secret: "spudboy"
+	secret: "secret"
 }));
-app.use(cookieParser('spudboy'));
+app.use(cookieParser('secret'));
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/images'));
