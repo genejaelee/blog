@@ -129,6 +129,7 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
     console.log('length of files changed');
     $scope.postFilesToS3($scope.files, function(){
       console.log('succeeded');
+      // now post information to server
     });
   });
   
