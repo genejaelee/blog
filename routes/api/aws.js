@@ -45,7 +45,7 @@ var awsApi = function(app, db) {
     var hashedCanonicalRequest = crypto.createHash('sha256').update(canonicalRequest).digest('hex');
                             
     // create string to sign
-    var stringToSign = "AWS4-HMAC-SHA256\n" + date + "\n" +
+    var stringToSign = "AWS4-HMAC-SHA256\n" +
                         datetz + "\n" +
                         credential + "\n" +
                         hashedCanonicalRequest;
