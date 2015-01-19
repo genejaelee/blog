@@ -36,10 +36,11 @@ var awsApi = function(app, db) {
     var canonicalRequest = "POST\n" +
                             "/\n" +
                             "\n" +
-                            "host:genejaelee-assets.s3.amazonaws.com\n"
+                            "host:genejaelee-assets.s3.amazonaws.com\n" +
                             "x-amz-date:" + datetz + "\n" +
                             "host;x-amz-date\n" +
                             hashedPayload;
+    console.log('canonical request is ' + canonicalRequest);
     
     var hashedCanonicalRequest = crypto.createHash('sha256').update(canonicalRequest).digest('hex');
                             
