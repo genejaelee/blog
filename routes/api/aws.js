@@ -57,7 +57,7 @@ var awsApi = function(app, db) {
       'key': awsAccessKey,
       'policy': encodedPolicy,
       'signature': signature,
-      'date': date,
+      'date': datetz,
       'credential': credential
     });
   });

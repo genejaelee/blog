@@ -124,11 +124,11 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
             'policy': credentials.policy,
             'x-amz-algorithm': 'AWS4-HMAC-SHA256',
             'x-amz-credential': credentials.credential,
-            'signature': credentials.signature,
+            'x-amz-signature': credentials.signature,
             'x-amz-date': credentials.date,
-            'filename': file.name
-          },
-          file: file,
+            'filename': file.name,
+            'file': file
+          }
         }).
         success(function (data, status, headers, config) {
           callback(true);
