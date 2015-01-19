@@ -27,7 +27,7 @@ var awsApi = function(app, db) {
     }
     var encodedPolicy = Buffer(JSON.stringify(policyJson)).toString('base64');
     
-    var payload = JSON.parse(req.body);
+    var payload = req.body;
     // hashed payload
     var hashedPayload = crypto.createHmac('sha256', payload).digest('hex');
     // create canonical request
@@ -69,7 +69,7 @@ function generateHmac (awsSecret, date, region, service, stringToSign, algorithm
   var hash4 = crypto.createHmac(algorithm, hash3).update("aws4_request").digest('binary');
   return crypto.createHmac(algorithm, hash4).update(stringToSign).digest('hex');
   
-  /*
+  /* verbose
   encoding = encoding || "base64";
   algorithm = algorithm || "sha256";
   var hash1 = crypto.createHmac(algorithm, "AWS4" + awsSecret);
