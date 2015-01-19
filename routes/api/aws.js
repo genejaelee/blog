@@ -25,7 +25,6 @@ var awsApi = function(app, db) {
         {"x-amz-date": date}
       ]
     }
-    console.log('payload is ' + payload);
     var encodedPolicy = Buffer(JSON.stringify(policyJson)).toString('base64');
     
     var payload = JSON.parse(req.body);
