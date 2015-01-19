@@ -118,7 +118,7 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
             'policy': credentials.policy,
             'x-amz-algorithm': 'AWS4-HMAC-SHA256',
             'x-amz-credential': credentials.credential,
-            'x-amz-signature': credentials.signature,
+            'signature': credentials.signature,
             'x-amz-date': credentials.date,
             "Content-Type": file.type != '' ? file.type : 'application/octet-stream',
             'filename': file.name
