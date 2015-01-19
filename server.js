@@ -21,6 +21,9 @@ app.use(multer({
 		console.log(file.fieldname + ' uploaded to ' + file.path);
 	}
 }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(cookieSession({

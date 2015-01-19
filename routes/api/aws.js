@@ -4,10 +4,12 @@ var moment = require('moment');
 var awsApi = function(app, db) {
   console.log('included aws api');
   
-  app.get('/api/aws/credentials', function(req, res, next) {
+  app.post('/api/aws/credentials', function(req, res, next) {
+    // init variables
     var awsSecret = process.env.AWS_SECRET_ACCESS_KEY;
     var awsAccessKey = process.env.AWS_ACCESS_KEY_ID;
     var date = moment(Date.now()).format('YYYYMMDD');
+    var datetz = moment(Date.now()).format('YYYYMMDD[T]HHMMSS[Z]');
     var region = "us-west-1";
     var credential = awsAccessKey + "/" + date + "/" + "us-west-1/s3/aws4_request"
     var policyJson = {
@@ -23,9 +25,31 @@ var awsApi = function(app, db) {
         {"x-amz-date": date}
       ]
     }
+    console.log('payload is ' + payload);
     var encodedPolicy = Buffer(JSON.stringify(policyJson)).toString('base64');
+    
+    var payload = JSON.parse(req.body);
+    // hashed payload
+    var hashedPayload = crypto.createHmac('sha256', payload).digest('hex');
+    // create canonical request
+    var canonicalRequest = "POST\n" +
+                            "/\n" +
+                            "\n" +
+                            "host:genejaelee-assets.s3.amazonaws.com\n"
+                            "x-amz-date:" + datetz + "\n" +
+                            "host;x-amz-date\n" +
+                            hashedPayload;
+    
+    var hashedCanonicalRequest = crypto.createHmac('sha256', canonicalRequest).digest('hex');
+                            
+    // create string to sign
+    var stringToSign = "AWS4-HMAC-SHA256\n" + date + "\n" +
+                        datetz + "\n" +
+                        credential + "\n" +
+                        hashedCanonicalRequest;
+    
     // create HMAC-SHA256 hash
-    var signature = generateHmac(awsSecret, date, region, "s3", encodedPolicy);
+    var signature = generateHmac(awsSecret, date, region, "s3", stringToSign);
     
     res.json({
       'key': awsAccessKey,
@@ -37,7 +61,16 @@ var awsApi = function(app, db) {
   });
 }
 
-function generateHmac (awsSecret, date, region, service, encodedPolicy, algorithm, encoding) {
+function generateHmac (awsSecret, date, region, service, stringToSign, algorithm, encoding) {
+  encoding = encoding || "base64";
+  algorithm = algorithm || "sha256";
+  var hash1 = crypto.createHmac(algorithm, "AWS4" + awsSecret).update(date).digest('binary');
+  var hash2 = crypto.createHmac(algorithm, hash1).update(region).digest('binary');
+  var hash3 = crypto.createHmac(algorithm, hash2).update(service).digest('binary');
+  var hash4 = crypto.createHmac(algorithm, hash3).update("aws4_request").digest('binary');
+  return crypto.createHmac(algorithm, hash4).update(stringToSign).digest('hex');
+  
+  /*
   encoding = encoding || "base64";
   algorithm = algorithm || "sha256";
   var hash1 = crypto.createHmac(algorithm, "AWS4" + awsSecret);
@@ -58,6 +91,7 @@ function generateHmac (awsSecret, date, region, service, encodedPolicy, algorith
   var signature = hash5.read().toString('hex');
   console.log(signature);
   return signature;
+  */
 }
 
 module.exports = awsApi;

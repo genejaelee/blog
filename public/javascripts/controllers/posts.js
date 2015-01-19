@@ -88,10 +88,16 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
     });
   });
   
-  $scope.getAWSCredentials = function(callback){
+  $scope.getAWSCredentials = function(file, callback){
     $http({
-      method: "GET",
-      url: "/api/aws/credentials"
+      method: "POST",
+      url: "/api/aws/credentials",
+      headers: {
+        "Content-Type": 'application/json'
+      },
+      data: {
+        'file': JSON.stringify(file)
+      }
     }).
     success(function (data, status, headers, config) {
       callback(data);
@@ -104,7 +110,7 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
       var file = files[i];
       console.log('uploading ' + JSON.stringify(file) + ' client-side');
       // get policy, key, and signature
-      $scope.getAWSCredentials(function(credentials){
+      $scope.getAWSCredentials(file, function(credentials){
         // now POST
         console.log('about to post to s3');
         $scope.upload = $upload.upload({
