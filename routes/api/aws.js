@@ -9,7 +9,7 @@ var awsApi = function(app, db) {
     var awsAccessKey = process.env.AWS_ACCESS_KEY_ID;
     var date = moment(Date.now()).format('YYYYMMDD');
     var region = "us-west-1";
-    var credential = awsAccessKey + "%2F" + date + "%2F" + "us-west-1%2Fs3%2Faws4_request"
+    var credential = awsAccessKey + "/" + date + "/" + "us-west-1/s3/aws4_request"
     var policyJson = {
       "expiration": "2020-01-01T00:00:00Z",
       "conditions": [ 
