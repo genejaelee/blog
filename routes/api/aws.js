@@ -11,7 +11,7 @@ var awsApi = function(app, db) {
     var date = moment(Date.now()).format('YYYYMMDD');
     var datetz = moment(Date.now()).format('YYYYMMDD[T]HHMMSS[Z]');
     var region = "us-west-1";
-    var credential = date + "%2F" + region + "%2F" + "s3%2Faws4_request";
+    var credential = awsAccessKey + "%2F" + date + "%2F" + region + "%2F" + "s3%2Faws4_request";
     var payload = req.body.file;
     var policyJson = {
       "expiration": "2020-01-01T00:00:00Z",
