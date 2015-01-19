@@ -122,6 +122,7 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
             'AWSAccessKeyId': credentials.key,
             'acl': 'public-read',
             'policy': credentials.policy,
+            'x-amz-meta-uuid': '14365123651274',
             'x-amz-algorithm': 'AWS4-HMAC-SHA256',
             'x-amz-credential': credentials.credential,
             'x-amz-signature': credentials.signature,
