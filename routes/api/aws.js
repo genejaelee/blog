@@ -40,10 +40,10 @@ var awsApi = function(app, db) {
 function generateHmac (awsSecret, date, region, service, encodedPolicy, algorithm, encoding) {
   encoding = encoding || "base64";
   algorithm = algorithm || "sha256";
-  var hash1 = crypto.createHmac(algorithm, "AWS4" + awsSecret).update(date).digest('hex');
-  var hash2 = crypto.createHmac(algorithm, hash1).update(region).digest('hex');
-  var hash3 = crypto.createHmac(algorithm, hash2).update(service).digest('hex');
-  var hash4 = crypto.createHmac(algorithm, hash3).update("aws4_request").digest('hex');
+  var hash1 = crypto.createHmac(algorithm, "AWS4" + awsSecret).update(date).digest('binary');
+  var hash2 = crypto.createHmac(algorithm, hash1).update(region).digest('binary');
+  var hash3 = crypto.createHmac(algorithm, hash2).update(service).digest('binary');
+  var hash4 = crypto.createHmac(algorithm, hash3).update("aws4_request").digest('binary');
   return crypto.createHmac(algorithm, hash4).update(encodedPolicy).digest(encoding);
 }
 
