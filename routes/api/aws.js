@@ -29,7 +29,7 @@ var awsApi = function(app, db) {
     
     var payload = req.body;
     // hashed payload
-    var hashedPayload = crypto.createHmac('sha256', payload).digest('hex');
+    var hashedPayload = crypto.createHmac('sha256').update(payload).digest('hex');
     // create canonical request
     var canonicalRequest = "POST\n" +
                             "/\n" +
