@@ -39,7 +39,7 @@ var awsApi = function(app, db) {
                             "host;x-amz-date\n" +
                             hashedPayload;
     
-    var hashedCanonicalRequest = crypto.createHmac('sha256', canonicalRequest).digest('hex');
+    var hashedCanonicalRequest = crypto.createHmac('sha256').update(canonicalRequest).digest('hex');
                             
     // create string to sign
     var stringToSign = "AWS4-HMAC-SHA256\n" + date + "\n" +
