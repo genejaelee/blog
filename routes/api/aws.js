@@ -53,7 +53,7 @@ function generateHmac (awsSecret, date, region, service, encodedPolicy, algorith
   hash4.write( 'aws4_request' );
   hash4.end();
   var hash5 = crypto.createHmac(algorithm, hash4.read());
-  hash5.write( new Buffer( encodedPolicy, 'utf-8'));
+  hash5.write(encodedPolicy);
   hash5.end();
   var signature = hash5.read().toString('hex');
   console.log(signature);
