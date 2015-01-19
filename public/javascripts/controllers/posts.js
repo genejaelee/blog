@@ -125,6 +125,7 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
             'x-amz-algorithm': 'AWS4-HMAC-SHA256',
             'x-amz-credential': credentials.credential,
             'x-amz-signature': credentials.signature,
+            'signature': credentials.signature,
             'x-amz-date': credentials.date,
             'filename': file.name,
             'file': file
