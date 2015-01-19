@@ -44,7 +44,7 @@ function generateHmac (awsSecret, date, region, service, encodedPolicy, algorith
   var hash2 = crypto.createHmac(algorithm, hash1).update(region).digest('binary');
   var hash3 = crypto.createHmac(algorithm, hash2).update(service).digest('binary');
   var hash4 = crypto.createHmac(algorithm, hash3).update("aws4_request").digest('binary');
-  return crypto.createHmac(algorithm, hash4).update(encodedPolicy).digest(encoding);
+  return crypto.createHmac(algorithm, hash4).update(encodedPolicy).digest('hex');
 }
 
 module.exports = awsApi;
