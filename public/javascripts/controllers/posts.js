@@ -126,7 +126,6 @@ postsModule.controller('postsNewController', function(uploaderMethods, $scope, $
             'x-amz-credential': credentials.credential,
             'signature': credentials.signature,
             'x-amz-date': credentials.date,
-            "Content-Type": 'multipart/form-data',
             'filename': file.name
           },
           file: file,

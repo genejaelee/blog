@@ -11,7 +11,8 @@ var awsApi = function(app, db) {
     var date = moment(Date.now()).format('YYYYMMDD');
     var datetz = moment(Date.now()).format('YYYYMMDD[T]HHMMSS[Z]');
     var region = "us-west-1";
-    var credential = date + "%2F" + region + "%2F" + "s3%2Faws4_request"
+    var credential = date + "%2F" + region + "%2F" + "s3%2Faws4_request";
+    var payload = req.body.file;
     var policyJson = {
       "expiration": "2020-01-01T00:00:00Z",
       "conditions": [ 
@@ -25,10 +26,8 @@ var awsApi = function(app, db) {
         {"x-amz-date": date}
       ]
     }
+    // base64 encode policy JSON
     var encodedPolicy = Buffer(JSON.stringify(policyJson)).toString('base64');
-    
-    var payload = req.body.file;
-    console.log(payload);
     // hashed payload
     var hashedPayload = crypto.createHash('sha256').update(payload).digest('hex');
     console.log(hashedPayload);
@@ -50,9 +49,10 @@ var awsApi = function(app, db) {
                         credential + "\n" +
                         hashedCanonicalRequest;
     
-    // create HMAC-SHA256 hash
+    // run SHA256 hashing sequence to get signature
     var signature = generateHmac(awsSecret, date, region, "s3", stringToSign);
     
+    // return parts as JSON
     res.json({
       'key': awsAccessKey,
       'policy': encodedPolicy,
