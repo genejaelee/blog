@@ -64,6 +64,7 @@ var awsApi = function(app, db) {
 }
 
 function generateHmac (awsSecret, date, region, service, stringToSign, algorithm, encoding) {
+  /*
   encoding = encoding || "base64";
   algorithm = algorithm || "sha256";
   var hash1 = crypto.createHmac(algorithm, "AWS4" + awsSecret).update(date).digest('binary');
@@ -71,8 +72,8 @@ function generateHmac (awsSecret, date, region, service, stringToSign, algorithm
   var hash3 = crypto.createHmac(algorithm, hash2).update(service).digest('binary');
   var hash4 = crypto.createHmac(algorithm, hash3).update("aws4_request").digest('binary');
   return crypto.createHmac(algorithm, hash4).update(stringToSign).digest('hex');
+  */
   
-  /* verbose
   encoding = encoding || "base64";
   algorithm = algorithm || "sha256";
   var hash1 = crypto.createHmac(algorithm, "AWS4" + awsSecret);
@@ -88,12 +89,11 @@ function generateHmac (awsSecret, date, region, service, stringToSign, algorithm
   hash4.write( 'aws4_request' );
   hash4.end();
   var hash5 = crypto.createHmac(algorithm, hash4.read());
-  hash5.write(encodedPolicy);
+  hash5.write(stringToSign);
   hash5.end();
   var signature = hash5.read().toString('hex');
-  console.log(signature);
+  console.log('signature is ' + signature);
   return signature;
-  */
 }
 
 module.exports = awsApi;
