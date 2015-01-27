@@ -10,27 +10,32 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "multer": "~0.1.6",
-    "busboy": "*",
     "body-parser": "~1.10.1",
+    "busboy": "*",
     "cookie-parser": "~1.3.3",
-    "csurf": "1.6.5",
     "cookie-session": "*",
+    "csurf": "1.6.5",
     "debug": "~2.1.1",
     "express": "~4.10.6",
+    "flux": "2.0.0",
+    "instagram-node": "^0.5.5",
     "jade": "~1.8.2",
+    "moment": "^2.9.0",
     "mongodb": "^2.0.13",
     "mongoskin": "~1.4.1",
     "morgan": "~1.5.1",
+    "multer": "~0.1.6",
+    "node-jsx": "^0.11.0",
+    "react": "0.12.2",
     "serve-favicon": "~2.2.0",
-    "stylus": "^0.42.3",
-    "angular": "*",
-    "grunt": "~0.4.5",
-    "grunt-contrib-uglify": "~0.5.0",
-    "moment": "^2.9.0"
+    "stylus": "^0.42.3"
   },
   "devDependencies": {
-    "grunt-ng-constant": "^1.0.0",
-    "moment": "^2.9.0"
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.0.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-nodemon": "^0.3.0",
+    "grunt-react": "^0.9.0",
+    "react-tools": "^0.11.2"
   }
 }

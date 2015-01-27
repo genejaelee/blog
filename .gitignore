@@ -1,4 +1,8 @@
 # Ignore static assets not part of core app
 /public/files
 
+# Ignore modules
 /node_modules
+
+# Ignore env variables file
+/constants.js
