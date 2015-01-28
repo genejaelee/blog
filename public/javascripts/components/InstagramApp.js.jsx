@@ -1,14 +1,11 @@
+console.log('init instagram component');
+
 var React = require('react');
-var CartStore = require('../stores/CartStore');
-var ProductStore = require('../stores/ProductStore');
-var FluxProduct = require('./FluxProduct.react');
-var FluxCart = require('./FluxCart.react');
 
 // Method to retrieve state from Stores
-function getCartState() {
+function getImagesState() {
   return {
-    product: ProductStore.getProduct(),
-    selectedProduct: ProductStore.getSelected(),
+    images: this.props.images
   };
 }
 
@@ -17,7 +14,7 @@ var InstagramApp = React.createClass({
   
   // Get initial state from stores
   getInitialState: function() {
-    return getCartState();
+    return getImagesState();
   },
   
   // Add change listeners to stores
@@ -34,25 +31,48 @@ var InstagramApp = React.createClass({
   
   render: function() {
     return(
-      <div className="fluxCartApp">
-        <FluxCart 
-          products={this.state.cartItems}
-          count={this.state.cartCount}
-          total={this.state.cartTotal}
-          visible={this.state.cartVisible} />
-        <FluxProduct
-          product={this.state.product} 
-          cartitems={this.state.cartItems}
-          selected={this.state.selectedProduct} />
+      <div className="instagramApp">
+        <InstagramPics 
+          urls={this.state.urls} />
       </div>
     );
   },
   
   // Method to setState based upon Store changes
   _onChange: function() {
-    this.setState(getCartState());
+    this.setState(getImagesState());
   }
   
 });
 
-module.exports = FluxCartApp;
+var InstagramPics = React.createClass({
+  render: function() {
+    var picNodes = this.props.urls.map(function (url) {
+      return (
+        <InstagramPic
+          url={url} />
+      );
+    });
+    return (
+      <div className="instagramPics">
+        {picNodes}
+      </div>
+    );
+  }
+});
+
+var InstagramPic = React.createClass({
+  render: function() {
+    return (
+      <div className="instagramPic">
+        <img src={this.props.url}/>
+      </div>
+    )
+  }
+});
+React.render(
+  <InstagramApp images="#{images}" />,
+  document.getElementById('imagesContainer')
+);
+
+module.exports = InstagramApp;
