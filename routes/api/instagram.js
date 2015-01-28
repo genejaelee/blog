@@ -49,11 +49,8 @@ var instagramApi = function(app, db) {
   
   // ROUTES
   app.get('/instagram', function(req, res, next) {
-    // check if signed in
-    if (req.param("signin")) { var notification = "Successfully signed in." };
     res.render('./instagram/show.jade', {
       'title': "Instagram Page",
-      'notification': notification,
       'images': []
     });
   });
@@ -66,17 +63,19 @@ var instagramApi = function(app, db) {
   
   app.get('/api/instagram/handleauth', function(req, res, next) {
     ig.authorize_user(req.query.code, redirect_uri, function(err, result) {
+      // UPDATE IG CLIENT WITH TOKEN
       ig.use(igCreds(result.access_token));
-      // AUTHORIZE USER
       if (err) { res.send("failed") }
       else {
         getMedia(ig, 10, function(medias){
-          var urlArray = [];
-          getUrls(urlArray, medias, function(array){
-            urlArray = array;
+          var emptyArray = [];
+          getUrls(emptyArray, medias, function(array){
+            console.log(array);
+
             res.render('instagram/show.jade', {
               'images': array
             });
+
           });
           
         });

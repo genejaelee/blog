@@ -8,6 +8,7 @@ block content
       ul
         li
           a(href="/api/instagram/auth")!="Sign In"
-  for image in images
-    div
-      img(src=image)
+    div#imagesContainer
+  script(type="text/javascript" src="/javascripts/components/InstagramApp.js.jsx").
+    console.log('hello, render the app component');
+  
