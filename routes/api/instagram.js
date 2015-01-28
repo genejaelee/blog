@@ -25,6 +25,28 @@ var instagramApi = function(app, db) {
   ig.use(igCreds());
   var redirect_uri = "http://lvh.me:3000/api/instagram/handleauth"; 
   
+  // FUNCTIONS
+  function getMedia(_ig, count, callback) {
+    _ig.user_self_media_recent({'count': count}, function(err, medias, pagination, remaining, limit) {
+      console.log('getting media');
+      if (err) { res.send(err) }
+      else {
+        callback(medias);
+      }
+    });
+  }
+  
+  function getUrls(array, _medias, callback) {
+    for (i = 0; i < _medias.length; i++) {
+      var media = _medias[i];
+      var url = media.images.standard_resolution.url;
+      array.push(url);
+      if (i == (_medias.length - 1)) {
+        callback(array);
+      }
+    }
+  }
+  
   // ROUTES
   app.get('/instagram', function(req, res, next) {
     // check if signed in
@@ -48,82 +70,67 @@ var instagramApi = function(app, db) {
       // AUTHORIZE USER
       if (err) { res.send("failed") }
       else {
-        // GET MEDIA
-        ig.user_self_media_recent({count:10}, function(err, medias, pagination, remaining, limit) {
-          console.log('getting media');
-          if (err) { res.send(err) }
-          else {
-            // REDIRECT AND PASS IMAGE LINKS
-            var urlArray = [];
-            getUrls(urlArray, medias, function(array){
-              urlArray = array;
-              res.render('instagram/show.jade', {
-                'images': array
-              });
+        getMedia(ig, 10, function(medias){
+          var urlArray = [];
+          getUrls(urlArray, medias, function(array){
+            urlArray = array;
+            res.render('instagram/show.jade', {
+              'images': array
             });
-            
-            /*
-            // CHECK IF BUCKET EXISTS AND POST
-            s3.headBucket({ 'Bucket': bucketName }, function(err, data) {
-              console.log('posting to s3');
-              if (err) {
-                console.log(err);
-                s3.createBucket({ 'Bucket': bucketName });
-              }
-              else {
-                // LOOP THROUGH AND UPLOAD MEDIAS
-                console.log('looping through media');
-                for (i = 0; i < medias.length; i++) {
-                  var media = medias[i]
-                  var filepath = media.id + ".jpg"
-                  console.log(media.images);
-                  // DOWNLOAD AND WRITE THIS FILE
-                  download(media.images.standard_resolution.url, filepath, function(err){
-                    if (err) console.log(err);
-                    else {
-                      // BUFFER FILE
-                      fs.readFile(filepath, function(err, buffer) {
-                        var params = {
-                          Bucket: bucketName,
-                          Key: "instagram/" + media.id,
-                          Body: buffer,
-                        };
-                        // UPLOAD STREAM
-                        s3.upload(params, function(s3err, results){
-                          if (s3err) res.send(s3err);
-                          else {
-                            console.log(results);
-                            fs.unlink(filepath, function(){
-                              console.log('file deleted');
-                            });
-                          }
-                        });
-                      });
-                    }
-                  });
-                }
-              }
-            });
-            */
-            var igCollection = db.collection('instagram');
-          }
+          });
+          
         });
         
+            
+        var igCollection = db.collection('instagram');
       }
     });
   });
   
-  // FUNCTIONS
-  function getUrls(array, medias, callback) {
-    for (i = 0; i < medias.length; i++) {
-      var media = medias[i];
-      var url = media.images.standard_resolution.url;
-      array.push(url);
-      if (i == (medias.length - 1)) {
-        callback(array);
-      }
-    }
-  }
 }
 
 module.exports = instagramApi;
+
+/*
+// CHECK IF BUCKET EXISTS AND POST
+s3.headBucket({ 'Bucket': bucketName }, function(err, data) {
+  console.log('posting to s3');
+  if (err) {
+    console.log(err);
+    s3.createBucket({ 'Bucket': bucketName });
+  }
+  else {
+    // LOOP THROUGH AND UPLOAD MEDIAS
+    console.log('looping through media');
+    for (i = 0; i < medias.length; i++) {
+      var media = medias[i]
+      var filepath = media.id + ".jpg"
+      console.log(media.images);
+      // DOWNLOAD AND WRITE THIS FILE
+      download(media.images.standard_resolution.url, filepath, function(err){
+        if (err) console.log(err);
+        else {
+          // BUFFER FILE
+          fs.readFile(filepath, function(err, buffer) {
+            var params = {
+              Bucket: bucketName,
+              Key: "instagram/" + media.id,
+              Body: buffer,
+            };
+            // UPLOAD STREAM
+            s3.upload(params, function(s3err, results){
+              if (s3err) res.send(s3err);
+              else {
+                console.log(results);
+                fs.unlink(filepath, function(){
+                  console.log('file deleted');
+                });
+              }
+            });
+          });
+        }
+      });
+    }
+  }
+});
+*/
