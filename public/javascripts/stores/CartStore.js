@@ -75,8 +75,8 @@ AppDispatcher.register(function(payload) {
   
   switch(action.actionType) {
     
-    // Respond to CART_ADD action
-    case FluxCartConstants.CART_ADD:
+    // Respond to some action
+    case InstagramConstants.CART_ADD:
       add(action.sku, action.update);
       break;
       

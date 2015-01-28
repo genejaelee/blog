@@ -4,11 +4,7 @@ var zlib = require('zlib');
 var routes = function(app, db){
   // init APIs
   var awsApi = require('./api/aws')(app, db);
-  
-  app.get('/instagram', function(req, res, next) {
-    console.log('ROUTING TO instagram page');
-    res.render('./instagram/show.jade');
-  });
+  var instagramApi = require('./api/instagram')(app, db);
   
   app.get('/posts/new', function(req, res, next) {
     console.log('ROUTING TO posts/new');

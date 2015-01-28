@@ -9,15 +9,11 @@ function getCartState() {
   return {
     product: ProductStore.getProduct(),
     selectedProduct: ProductStore.getSelected(),
-    cartItems: CartStore.getCartItems(),
-    cartCount: CartStore.getCartCount(),
-    cartTotal: CartStore.getCartTotal(),
-    cartVisible: CartStore.getCartVisible()
   };
 }
 
 // Define main controller view
-var FluxCartApp = React.createClass({
+var InstagramApp = React.createClass({
   
   // Get initial state from stores
   getInitialState: function() {

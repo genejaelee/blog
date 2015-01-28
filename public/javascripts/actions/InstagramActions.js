@@ -1,12 +1,12 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var FluxCartConstants = require('../constants/FluxCartConstants');
+var InstagramConstants = require('../constants/InstagramConstants');
 
 // Define actions object
-var FluxCartActions = {
+var InstagramActions = {
   // Receive initial product data
-  receiveProduct: function(data) {
+  getMedia: function(data) {
     AppDispatcher.handleAction({
-      actionType: FluxCartConstants.RECEIVE_DATA,
+      actionType: InstagramConstants.GET_MEDIA,
       data: data
     });
   },

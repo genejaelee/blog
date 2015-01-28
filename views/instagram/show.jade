@@ -1,1 +1,13 @@
-"instagram"
+extends ../layout
+
+block content
+  h1= title
+  small= notification
+  div#instagramContainer
+    div.pageLinks
+      ul
+        li
+          a(href="/api/instagram/auth")!="Sign In"
+  for image in images
+    div
+      img(src=image)
