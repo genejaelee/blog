@@ -9,7 +9,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
-var csurf = require('csurf');
 var multer = require('multer');
 
 app.use(multer({ 
@@ -46,23 +45,6 @@ var db = mongoskin.db(app.config.mongodb); // get URI from config file
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-// init CSRF config
-var csrfValue = function(req) {
-	var token = (req.body && req.csrfToken())
-	|| (req.query && req.query._csrf)
-  || (req.headers['x-csrf-token'])
-  || (req.headers['x-xsrf-token']);
-  return token;
-}
-app.use(csurf({
-	value: csrfValue,
-	secret: 'XSRF-TOKEN'
-}));
-app.use(function(req, res, next) {
-	res.cookie('XSRF-TOKEN', req.csrfToken());
-	next();
-});
 
 // development error handler
 // will print stacktrace
