@@ -23,6 +23,7 @@ var instagramApi = function(app, db) {
     }
   }
   ig.use(igCreds());
+  ig.authorized = false;
   var redirect_uri = "http://lvh.me:3000/api/instagram/handleauth"; 
   
   // FUNCTIONS
@@ -49,10 +50,22 @@ var instagramApi = function(app, db) {
   
   // ROUTES
   app.get('/instagram', function(req, res, next) {
-    res.render('./instagram/show.jade', {
-      'title': "Instagram Page",
-      'images': []
-    });
+    if (ig.authorized) {
+      getMedia(ig, 10, function(medias){
+        var emptyArray = [];
+        getUrls(emptyArray, medias, function(array){
+          res.render('instagram/show.jade', {
+            'title': "Instagram Page",
+            'images': array
+          });
+        });
+      });
+    } else {
+      res.render('./instagram/show.jade', {
+        'title': "Instagram Page",
+        'images': []
+      });
+    }
   });
   
   app.get('/api/instagram/auth', function(req, res, next) {
@@ -62,26 +75,15 @@ var instagramApi = function(app, db) {
   });
   
   app.get('/api/instagram/handleauth', function(req, res, next) {
-    ig.authorize_user(req.query.code, redirect_uri, function(err, result) {
+    var token = req.query.code;
+    ig.authorize_user(token, redirect_uri, function(err, result) {
       // UPDATE IG CLIENT WITH TOKEN
       ig.use(igCreds(result.access_token));
       if (err) { res.send("failed") }
       else {
-        getMedia(ig, 10, function(medias){
-          var emptyArray = [];
-          getUrls(emptyArray, medias, function(array){
-            console.log(array);
-
-            res.render('instagram/show.jade', {
-              'images': array
-            });
-
-          });
-          
-        });
-        
-            
-        var igCollection = db.collection('instagram');
+        // AUTHORIZED AND REDIRECT
+        ig.authorized = true;
+        res.redirect('/instagram');
       }
     });
   });

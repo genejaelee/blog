@@ -1,55 +1,46 @@
 console.log('init instagram component');
 
-var React = require('react');
-
-// Method to retrieve state from Stores
-function getImagesState() {
-  return {
-    images: this.props.images
-  };
-}
-
 // Define main controller view
 var InstagramApp = React.createClass({
   
   // Get initial state from stores
   getInitialState: function() {
-    return getImagesState();
+    return({
+      'urls': this.props.params
+    });
   },
   
   // Add change listeners to stores
   componentDidMount: function() {
-    ProductStore.addChangeListener(this._onChange);
-    CartStore.addChangeListener(this._onChange);
   },
   
   // Remove change listeners from stores
   componentWillUnmount: function() {
-    ProductStore.removeChangeListener(this._onChange);
-    CartStore.removeChangeListener(this._onChange)
   },
   
   render: function() {
     return(
       <div className="instagramApp">
-        <InstagramPics 
+        <InstagramPics
           urls={this.state.urls} />
       </div>
     );
-  },
-  
-  // Method to setState based upon Store changes
-  _onChange: function() {
-    this.setState(getImagesState());
   }
-  
+    
 });
 
 var InstagramPics = React.createClass({
+  getInitialState: function() {
+    return ({
+      'urls': this.props.urls 
+    });
+  },
+  
   render: function() {
-    var picNodes = this.props.urls.map(function (url) {
+    var picNodes = this.state.urls.map(function (url) {
       return (
         <InstagramPic
+          key={url.id}
           url={url} />
       );
     });
@@ -62,16 +53,29 @@ var InstagramPics = React.createClass({
 });
 
 var InstagramPic = React.createClass({
+  getInitialState: function(){
+    return ({
+      'url': this.props.url
+    });
+  },
+  
+  handleClick: function() {
+    this.setState({ 'url': null })
+  },
+  
   render: function() {
     return (
-      <div className="instagramPic">
-        <img src={this.props.url}/>
+      <div 
+        className="instagramPic"
+        onClick={this.handleClick}>
+        <img src={this.state.url}/>
       </div>
     )
   }
 });
+
 React.render(
-  <InstagramApp images="#{images}" />,
+  <InstagramApp params={params} />,
   document.getElementById('imagesContainer')
 );
 
