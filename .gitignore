@@ -5,4 +5,4 @@
 /node_modules
 
 # Ignore env variables file
-/variables.js
+/constants.js
